@@ -127,7 +127,7 @@ public class AVF {
                 // rec has the following format:
                 // <record-id><,><data1><,><data2><,><data3><,>...
                 String[] tokens = StringUtils.split(rec, ",");
-                for (int i=25; i < tokens.length; i++) {
+                for (int i=24; i < tokens.length; i++) {
                     results.add(new Tuple2<String,Integer>(tokens[i], 1));
                 }
                 return results.iterator();
