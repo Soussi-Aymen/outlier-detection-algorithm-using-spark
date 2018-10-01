@@ -89,10 +89,9 @@ public class AVF {
         // Step-1: handle input parameters
         // make sure we have 2 arguments
 
-        final int K = 5;
+        final int K = 10;
         String current = System.getProperty("user.dir");
-        //final String inputPath =  current + "/commons/geo/in/updatenewyork.txt";
-        final String inputPath =  current + "/src/data/in/updatenewyork.txt";
+        final String inputPath =  current + "/src/data/out/updatenewyork.csv";
 
         THE_LOGGER.info("K="+K);
         THE_LOGGER.info("inputPath="+inputPath);
@@ -103,9 +102,15 @@ public class AVF {
         // as a factory for creating new RDDs
         JavaSparkContext context = new JavaSparkContext("local", "OUtlier detection finally");
         //read input (as categorical dataset) and create the first RDD
-        JavaRDD<String> records = context.textFile(inputPath);
-        records.cache(); // cache it: since we are goint to use it again
+        JavaRDD<String> data = context.textFile(inputPath);
+        final String header = data.first();
+        JavaRDD<String>  records = data.filter(line -> !line.contains(header));    
+       
+        records.cache(); // cache it: since we are going to use it again
 
+
+   
+        
         // Step-3: perform the map() for each RDD element
         // for each input record of: <record-id><,><data1><,><data2><,><data3><,>...
         //    emit(data1, 1)
@@ -127,8 +132,11 @@ public class AVF {
                 // rec has the following format:
                 // <record-id><,><data1><,><data2><,><data3><,>...
                 String[] tokens = StringUtils.split(rec, ",");
-                for (int i=24; i < tokens.length; i++) {
+                //for (int i=23; i < tokens.length; i++) {
+                for (int i=1; i < tokens.length; i++) {
+
                     results.add(new Tuple2<String,Integer>(tokens[i], 1));
+                    System.out.println(tokens[i]);
                 }
                 return results.iterator();
             }
@@ -163,8 +171,9 @@ public class AVF {
                 String[] tokens = StringUtils.split(rec, ",");
                 String recordID = tokens[0];
                 int sum = 0;
-                for (int i=25; i < tokens.length; i++) {
-                    sum += map.get(tokens[i]);
+               // for (int i=25; i < tokens.length; i++) {
+                for (int i=1; i < tokens.length; i++) {
+                sum += map.get(tokens[i]);
                 }
                 double m = (double) (tokens.length -1);
                 double avfScore = ((double) sum) / m;
@@ -185,6 +194,10 @@ public class AVF {
         //List<Tuple2<String,Double>> outliers2 = avfScore.takeOrdered(K, TupleComparatorDescending.INSTANCE);
         //System.out.println("descending");
        //System.out.println(outliers2);
+        System.out.println("--------------");
+        List<Tuple2<String,Double>> outliers2 = avfScore.takeOrdered(K, TupleComparatorDescending.INSTANCE);
+        System.out.println("descending Avf Score");
+       System.out.println(outliers2);
 
         // Step-8: done & close the spark context
         context.close();

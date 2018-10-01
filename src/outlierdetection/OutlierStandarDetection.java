@@ -43,7 +43,7 @@ public class OutlierStandarDetection {
 
                 double[] values = new double[71];
                 for (int i = 0; i < 71; i++) {
-                    values[i] = Double.parseDouble(kddArr[25]);
+                    values[i] = Double.parseDouble(kddArr[26]);
                 }
                 return Vectors.dense(values);
             }

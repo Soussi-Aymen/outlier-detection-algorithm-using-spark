@@ -98,13 +98,14 @@ public class CSVReader {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 
             //Reading the first colones names string line
-            BufferedWriter bw = new BufferedWriter(new FileWriter(current + "/src/data/out/updatenewyork.csv"));
+           BufferedWriter bw = new BufferedWriter(new FileWriter(current + "/src/data/out/updatenewyork.csv"));
 
 
-            newline = "CMPLNT_NUM,CMPLNT_FR_DT,CMPLNT_FR_TM,CMPLNT_TO_DT,CMPLNT_TO_TM,RPT_DT=,KY_CD"
+           /* newline = "CMPLNT_NUM,CMPLNT_FR_DT,CMPLNT_FR_TM,CMPLNT_TO_DT,CMPLNT_TO_TM,RPT_DT=,KY_CD"
                     + ",OFNS_DESC,PD_CD,PD_DESC,CRM_ATPT_CPTD_CD,LAW_CAT_CD,JURIS_DESC,BORO_NM,ADDR_PCT_CD" +
                     ",LOC_OF_OCCUR_DESC,PREM_TYP_DESC,PARKS_NM,HADEVELOPT,X_COORD_CD,Y_COORD_CD,Latitude,Longitude"
-                    +",Lat_Lon,GeoHash,Week of year,Month,Day of month,Week of month,Day of week,Hour,Day/Night,TimeHash";
+                    +",Lat_Lon,GeoHash,Week of year,Month,Day of month,Week of month,Day of week,Hour,Day/Night,TimeHash";*/
+            newline="CMPLNT_NUM,GeoHash,Week of year,Month,Day of month,Week of month,Day of week,Hour,Day/Night,TimeHash";
             bw.write(newline);
             bw.newLine();
 
@@ -178,9 +179,9 @@ public class CSVReader {
                         ", Week of year= " + weekOfYear + ",Month= " + month + ", Day of month= " + dayOFMonth + ",Week of month= " + weekOfMonth + ",Day of week= " + dayOfWeek +
                         ",Hour= " + hour + ",Day/Night= " + day_night  + ",TimeHash= " + timehash +"]");
 
-                newline = line + "," + new_hash.toBase32() + "," + weekOfYear + "," + month + "," + dayOFMonth + "," + weekOfMonth + "," + dayOfWeek + "," + hour + "," + day_night+","+timehash;
-
-
+                //newline = line + "," + new_hash.toBase32() + "," + weekOfYear + "," + month + "," + dayOFMonth + "," + weekOfMonth + "," + dayOfWeek + "," + hour + "," + day_night+","+timehash;
+                newline=  cmplnt_num+","+ new_hash.toBase32() + "," + weekOfYear + "," + month + "," + dayOFMonth + "," + weekOfMonth + "," + dayOfWeek + "," + hour + "," + day_night+","+timehash;
+                
                 bw.write(newline);
                 bw.newLine();
             }
