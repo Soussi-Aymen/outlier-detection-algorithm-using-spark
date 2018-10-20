@@ -150,7 +150,9 @@ public class CSVReader {
 
                 //Hash Time variables initialising
                 Date cmplnt_fr = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss").parse(content[1] + " " + content[2]);
-                Calendar calendar = Calendar.getInstance();
+                System.out.println(cmplnt_fr);
+                
+                Calendar calendar = Calendar.getInstance(Locale.GERMAN);
                 calendar.setTime(cmplnt_fr);
                 month = calendar.get(Calendar.MONTH);
                 hour = calendar.get(Calendar.HOUR);
@@ -158,6 +160,12 @@ public class CSVReader {
                 weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
                 weekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH);
                 dayOFMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                //if(weekOfMonth>5)
+                 //{weekOfMonth=5;}
+                //fixing week of year 52
+                System.out.println(weekOfYear);
+        
+                System.out.println(weekOfMonth);
                 if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
                     day_night = "PM";
                 } else {
@@ -169,7 +177,7 @@ public class CSVReader {
                
                 
 
-                System.out.println("[CMPLNT_NUM= " + cmplnt_num + " , CMPLNT_FR_DT=" + cmplnt_fr_dt + " , CMPLNT_FR_TM=" + cmplnt_fr_tm +
+                /*System.out.println("[CMPLNT_NUM= " + cmplnt_num + " , CMPLNT_FR_DT=" + cmplnt_fr_dt + " , CMPLNT_FR_TM=" + cmplnt_fr_tm +
                         " , CMPLNT_TO_DT=" + cmplnt_to_dt + " , CMPLNT_TO_TM=" + cmplnt_to_tm + " , RPT_DT=" + rpt_dt + " , KY_CD=" + ky_cd +
                         " , OFNS_DESC=" + ofns_desc + " , PD_CD=" + pd_cd+ " , PD_DESC=" + pd_desc + " , CRM_ATPT_CPTD_CD=" + crm_atpt_cptd_cd +
                         " , LAW_CAT_CD=" + law_cat_cd + " , JURIS_DESC=" + juris_desc + " , BORO_NM=" + boro_nm + " , ADDR_PCT_CD=" + addr_pct_cd +
@@ -178,7 +186,7 @@ public class CSVReader {
                         " , Longitude=" + longitude + " , Lat_Lon=" + lat_lon + " , GeoHash=" + new_hash.toBase32() +
                         ", Week of year= " + weekOfYear + ",Month= " + month + ", Day of month= " + dayOFMonth + ",Week of month= " + weekOfMonth + ",Day of week= " + dayOfWeek +
                         ",Hour= " + hour + ",Day/Night= " + day_night  + ",TimeHash= " + timehash +"]");
-
+*/
                 //newline = line + "," + new_hash.toBase32() + "," + weekOfYear + "," + month + "," + dayOFMonth + "," + weekOfMonth + "," + dayOfWeek + "," + hour + "," + day_night+","+timehash;
                 newline=  cmplnt_num+","+ new_hash.toBase32() + "," + weekOfYear + "," + month + "," + dayOFMonth + "," + weekOfMonth + "," + dayOfWeek + "," + hour + "," + day_night+","+timehash;
                 

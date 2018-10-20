@@ -52,7 +52,7 @@ import org.apache.commons.lang.StringUtils;
 @SuppressWarnings("deprecation")
 public class AVF {
 
-    private static final Logger THE_LOGGER = Logger.getLogger(OutlierStandarDetection.class);
+    private static final Logger THE_LOGGER = Logger.getLogger(AVF.class);
 
 
     static class TupleComparatorAscending
@@ -91,7 +91,9 @@ public class AVF {
 
         final int K = 10;
         String current = System.getProperty("user.dir");
+        
         final String inputPath =  current + "/src/data/out/updatenewyork.csv";
+       // final String inputPath =  current + "/src/data/out/newdata.csv";
 
         THE_LOGGER.info("K="+K);
         THE_LOGGER.info("inputPath="+inputPath);
@@ -136,7 +138,6 @@ public class AVF {
                 for (int i=1; i < tokens.length; i++) {
 
                     results.add(new Tuple2<String,Integer>(tokens[i], 1));
-                    System.out.println(tokens[i]);
                 }
                 return results.iterator();
             }
@@ -194,10 +195,7 @@ public class AVF {
         //List<Tuple2<String,Double>> outliers2 = avfScore.takeOrdered(K, TupleComparatorDescending.INSTANCE);
         //System.out.println("descending");
        //System.out.println(outliers2);
-        System.out.println("--------------");
-        List<Tuple2<String,Double>> outliers2 = avfScore.takeOrdered(K, TupleComparatorDescending.INSTANCE);
-        System.out.println("descending Avf Score");
-       System.out.println(outliers2);
+      
 
         // Step-8: done & close the spark context
         context.close();

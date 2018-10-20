@@ -30,20 +30,24 @@ public class OutlierStandarDetection {
 
     public static void main(String[] args) throws FileNotFoundException {
         String current = System.getProperty("user.dir");
-        String csvFile = current + "/src/data/in/updatenewyork.txt";
+        String inputPath = current + "/src/data/out/updatenewyork.csv";
       
 
 
         JavaSparkContext jsc = new JavaSparkContext("local", "Anomaly Detection");
 
         //Varible for reading the csv file
-        JavaRDD<Vector> kddRDD = jsc.textFile(csvFile).map(new Function<String, Vector>() {
+        JavaRDD<String> data = jsc.textFile(inputPath);
+        final String header = data.first();
+        JavaRDD<String>  records = data.filter(line -> !line.contains(header));
+        records.cache();
+        JavaRDD<Vector> kddRDD = records.map(new Function<String, Vector>() {
             public Vector call(String line) throws Exception {
                 String[] kddArr = line.split(",");
 
                 double[] values = new double[71];
                 for (int i = 0; i < 71; i++) {
-                    values[i] = Double.parseDouble(kddArr[26]);
+                    values[i] = Double.parseDouble(kddArr[2]);
                 }
                 return Vectors.dense(values);
             }
