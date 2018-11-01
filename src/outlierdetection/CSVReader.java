@@ -5,6 +5,7 @@ import geohash.GeoHash;
 import timehash.TimeHash;
 
 import java.io.*;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -78,11 +79,11 @@ public class CSVReader {
 
         //varibles for Hash Time
         String day_night;
-        Integer month;
+      //  Integer month;
         int dayOfWeek;
-        int weekOfYear;
-        int weekOfMonth;
-        int dayOFMonth;
+    //    int weekOfYear;
+  //      int weekOfMonth;
+//        int dayOFMonth;
         int hour;
 
 
@@ -105,8 +106,10 @@ public class CSVReader {
                     + ",OFNS_DESC,PD_CD,PD_DESC,CRM_ATPT_CPTD_CD,LAW_CAT_CD,JURIS_DESC,BORO_NM,ADDR_PCT_CD" +
                     ",LOC_OF_OCCUR_DESC,PREM_TYP_DESC,PARKS_NM,HADEVELOPT,X_COORD_CD,Y_COORD_CD,Latitude,Longitude"
                     +",Lat_Lon,GeoHash,Week of year,Month,Day of month,Week of month,Day of week,Hour,Day/Night,TimeHash";*/
-            newline="CMPLNT_NUM,GeoHash,Week of year,Month,Day of month,Week of month,Day of week,Hour,Day/Night,TimeHash";
-            bw.write(newline);
+//            newline="CMPLNT_NUM,GeoHash,Week of year,Month,Day of month,Week of month,Day of week,Hour,Day/Night,TimeHash";
+           
+         newline="CMPLNT_NUM,Type_of_crime,GeoHash,TimeHash,Day of week,Hour,Day/Night";
+           bw.write(newline);
             bw.newLine();
 
 
@@ -154,23 +157,38 @@ public class CSVReader {
                 
                 Calendar calendar = Calendar.getInstance(Locale.GERMAN);
                 calendar.setTime(cmplnt_fr);
-                month = calendar.get(Calendar.MONTH);
-                hour = calendar.get(Calendar.HOUR);
+               // month = calendar.get(Calendar.MONTH);
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
                 dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-                weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
-                weekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH);
-                dayOFMonth = calendar.get(Calendar.DAY_OF_MONTH);
+               // weekOfYear = calendar.get(Calendar.WEEK_OF_YEAR);
+               // weekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH);
+               // dayOFMonth = calendar.get(Calendar.DAY_OF_MONTH);
                 //if(weekOfMonth>5)
                  //{weekOfMonth=5;}
                 //fixing week of year 52
-                System.out.println(weekOfYear);
+                //System.out.println(weekOfYear);
         
-                System.out.println(weekOfMonth);
-                if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
+               // System.out.println(weekOfMonth);
+             /*   if (calendar.get(Calendar.AM_PM) == Calendar.PM) {
                     day_night = "PM";
                 } else {
                     day_night = "AM";
+                }*/
+                if (hour >=6 && hour<=18) {
+                    day_night = "Day";
+                } else {
+                    day_night = "Night";
                 }
+                    DateFormatSymbols dfs = new DateFormatSymbols();
+                    String weekdays[] = dfs.getWeekdays();
+             
+                   
+                    String nameOfDay = weekdays[dayOfWeek];
+                    System.out.println(nameOfDay);
+
+                    
+                    
+                
                 //Initialising timehash variables                
                 epochtime=cmplnt_fr_dt.toInstant().getEpochSecond();
                 timehash=TimeHash.encode(epochtime, 5);
@@ -188,7 +206,10 @@ public class CSVReader {
                         ",Hour= " + hour + ",Day/Night= " + day_night  + ",TimeHash= " + timehash +"]");
 */
                 //newline = line + "," + new_hash.toBase32() + "," + weekOfYear + "," + month + "," + dayOFMonth + "," + weekOfMonth + "," + dayOfWeek + "," + hour + "," + day_night+","+timehash;
-                newline=  cmplnt_num+","+ new_hash.toBase32() + "," + weekOfYear + "," + month + "," + dayOFMonth + "," + weekOfMonth + "," + dayOfWeek + "," + hour + "," + day_night+","+timehash;
+               // newline=  cmplnt_num+","+ new_hash.toBase32() + "," + weekOfYear + "," + month + "," + dayOFMonth + "," + weekOfMonth + "," + dayOfWeek + "," + hour + "," + day_night+","+timehash;
+                // newline=  cmplnt_num+","+law_cat_cd+","+ new_hash.toBase32() + "," +timehash +"," + dayOfWeek + "," + hour +  "," + day_night;
+                 newline=  cmplnt_num+","+law_cat_cd+","+ new_hash.toBase32() + "," +timehash +"," + nameOfDay + "," + hour +  "," + day_night;
+
                 
                 bw.write(newline);
                 bw.newLine();
@@ -204,4 +225,6 @@ public class CSVReader {
         }
 
     }
+
+	
 }

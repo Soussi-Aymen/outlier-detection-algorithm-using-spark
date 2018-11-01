@@ -22,31 +22,7 @@ import org.apache.log4j.Logger;
 import org.apache.commons.lang.StringUtils;
 
 
-/**
- * Outlier Detection for Categorical Datasets
- *
- * Based on Paper:
- *       Title: Fast Parallel Outlier Detection for Categorical Datasets using MapReduce
- *       URL: http://www.eecs.ucf.edu/georgiopoulos/sites/default/files/247.pdf
- *
- * Additional reference:
- *       Title: Scalable and Efficient Outlier Detection in Large Distributed Data Sets with Mixed-Type Attributes
- *       URL: http://etd.fcla.edu/CF/CFE0002734/Koufakou_Anna_200908_PhD.pdf
- *
- *
- * Sample input URL: https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data
- * Sample input Data:
- *     1000025,5,1,1,1,2,1,3,1,1,2
- *     1002945,5,4,4,5,7,10,3,2,1,2
- *     1015425,3,1,1,1,2,2,3,1,1,2
- *     1016277,6,8,8,1,3,4,3,7,1,2
- *     1017023,4,1,1,3,2,1,3,1,1,2
- *     1017122,8,10,10,8,7,10,9,7,1,4
- *
- *
- * @author Mahmoud Parsian
- *
- */
+
 
 //in this file we will apply AVF Algorithme on our data 
 @SuppressWarnings("deprecation")
@@ -64,6 +40,7 @@ public class AVF {
                            Tuple2<String,Double> t2) {
             return (t1._2.compareTo(t2._2)); // sort based on AVF Score
         }
+
     }
 
     static class TupleComparatorDescending
@@ -89,7 +66,7 @@ public class AVF {
         // Step-1: handle input parameters
         // make sure we have 2 arguments
 
-        final int K = 10;
+        final int K = 70;
         String current = System.getProperty("user.dir");
         
         final String inputPath =  current + "/src/data/out/updatenewyork.csv";
@@ -190,6 +167,8 @@ public class AVF {
         System.out.println("--------------");
         System.out.println("Ascending AVF Score:");
         System.out.println(outliers);
+
+        
 
         //System.out.println("--------------");
         //List<Tuple2<String,Double>> outliers2 = avfScore.takeOrdered(K, TupleComparatorDescending.INSTANCE);
